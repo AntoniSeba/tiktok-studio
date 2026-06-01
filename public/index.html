@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TikTok Studio — Soft Synergy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎬</text></svg>">
+</head>
+<body>
+<div class="app">
+  <aside class="side">
+    <div class="brand">
+      <div class="logo">🎬</div>
+      <div><b>TikTok Studio</b><span>Soft Synergy</span></div>
+    </div>
+    <nav class="nav" id="nav">
+      <button data-view="dashboard" class="active"><span class="ic">📊</span> Pulpit</button>
+      <button data-view="videos"><span class="ic">🎞️</span> Filmy</button>
+      <button data-view="calendar"><span class="ic">📅</span> Kalendarz</button>
+      <button data-view="queue"><span class="ic">🗂️</span> Kolejka renderów</button>
+      <button data-view="analysis"><span class="ic">🏆</span> Analiza</button>
+      <button data-view="settings"><span class="ic">⚙️</span> Ustawienia</button>
+    </nav>
+    <div class="foot">
+      <span class="dot" id="health-dot"></span><span id="health-txt">łączenie…</span><br>
+      <span style="color:var(--mut2)">v1.0 · port 4317</span>
+    </div>
+  </aside>
+
+  <main class="main" id="main"><div class="empty">Ładowanie…</div></main>
+</div>
+
+<div class="overlay" id="overlay"><div class="modal" id="modal"></div></div>
+<div class="toast" id="toast"></div>
+
+<script src="app.js"></script>
+</body>
+</html>

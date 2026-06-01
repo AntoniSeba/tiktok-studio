@@ -1,0 +1,290 @@
+[
+  {
+    "id": "konto-bank-pl",
+    "name": "konto-bank-pl",
+    "cat": "value",
+    "title": "Bank zabiera Ci kasę za nic 🏦 Sprawdź to dziś",
+    "path": "/Users/antoni/claudecode/soft synergy new/ai-sales-funnel-short/ALL-RENDERS/konto-bank-pl_2026-05-31_17-26-02.mp4",
+    "pin": "Ile płacisz za konto? 👇",
+    "factors": {
+      "hook": "SZOK — mocne stwierdzenie",
+      "wizual": "RAW native foto (surowy, jakby z ręki)",
+      "glos": "Energiczny młody męski",
+      "tempo": "~12s, szybkie cięcia",
+      "temat": "Kasa / opłaty — złość",
+      "cta": "Pytanie do widza"
+    }
+  },
+  {
+    "id": "zasada-72h-pl",
+    "name": "zasada-72h-pl",
+    "cat": "trick",
+    "title": "Zasada 72h, która oszczędza Ci tysiące 🧠",
+    "path": "/Users/antoni/claudecode/soft synergy new/ai-sales-funnel-short/ALL-RENDERS/zasada-72h-pl_2026-05-31_17-22-03.mp4",
+    "pin": "Wypróbujesz? 👇",
+    "factors": {
+      "hook": "LICZBA / statystyka",
+      "wizual": "BRUTALIST tekst (czysta typografia, bloki koloru)",
+      "glos": "BRAK głosu — tylko muzyka + tekst",
+      "tempo": "~15s, rytm na bit",
+      "temat": "Psychologia / kasa — ciekawość",
+      "cta": "„Zapisz, żeby nie zapomnieć\""
+    }
+  },
+  {
+    "id": "abonament-pl",
+    "name": "abonament-pl",
+    "cat": "value",
+    "title": "Twój telefon kradnie Ci pieniądze co miesiąc 📱",
+    "path": "/Users/antoni/claudecode/soft synergy new/ai-sales-funnel-short/ALL-RENDERS/abonament-pl_2026-05-31_17-17-12.mp4",
+    "pin": "Ile apek płacisz, a nie używasz? 👇",
+    "factors": {
+      "hook": "STORY / POV",
+      "wizual": "CINEMATIC foto + ken-burns (sprawdzony styl)",
+      "glos": "Głęboki autorytet (Eric)",
+      "tempo": "~22s, wolne cinematic",
+      "temat": "Subskrypcje — strach przed stratą",
+      "cta": "Komentarz"
+    }
+  },
+  {
+    "id": "ustawienie-pl",
+    "name": "ustawienie-pl",
+    "cat": "value",
+    "title": "Wyłącz to ustawienie w telefonie JUŻ TERAZ ⚙️",
+    "path": "/Users/antoni/claudecode/soft synergy new/ai-sales-funnel-short/ALL-RENDERS/ustawienie-pl_2026-05-31_17-31-50.mp4",
+    "pin": "Miałeś to włączone? 👇",
+    "factors": {
+      "hook": "KOMENDA — „zrób to teraz\"",
+      "wizual": "UI ekranu telefonu (native screen-rec feel)",
+      "glos": "Szybki casual",
+      "tempo": "~18s, średnie",
+      "temat": "Tech / prywatność — strach",
+      "cta": "„Obserwuj po więcej trików\""
+    }
+  },
+  {
+    "id": "kwadraty-pl",
+    "name": "kwadraty-pl",
+    "cat": "trick",
+    "title": "Ile widzisz kwadratów? 95% się myli 🔲",
+    "path": "/Users/antoni/claudecode/soft synergy new/ai-sales-funnel-short/ALL-RENDERS/kwadraty-pl_2026-05-31_17-40-24.mp4",
+    "pin": "Ile naliczyłeś? 👇",
+    "factors": {
+      "hook": "PUZZLE wizualny",
+      "wizual": "MINIMAL grafika na jednolitym tle",
+      "glos": "Szept / intryga",
+      "tempo": "~14s",
+      "temat": "Brain teaser — zabawa/rywalizacja",
+      "cta": "„Odpowiedz w komentarzu\""
+    }
+  },
+  {
+    "id": "pensja-hook-pl",
+    "name": "pensja-hook-pl",
+    "cat": "value",
+    "title": "Ile zarabia osoba obok Ciebie? 💰",
+    "path": "/Users/antoni/claudecode/soft synergy new/ai-sales-funnel-short/ALL-RENDERS/pensja-hook-pl_2026-05-31_22-06-52.mp4",
+    "pin": "Sprawdziłeś widełki? 👇",
+    "factors": {
+      "hook": "🅰️ PYTANIE tekstowe w 1. sekundzie",
+      "wizual": "BRUTALIST tekst (bloki koloru)",
+      "glos": "BRAK głosu — muzyka + tekst",
+      "tempo": "10s, rytm na bit",
+      "temat": "Płace / porównanie — zazdrość",
+      "cta": "„Zapisz\" + pytanie"
+    }
+  },
+  {
+    "id": "liczba-szok-pl",
+    "name": "liczba-szok-pl",
+    "cat": "value",
+    "title": "Tracisz 1800 zł rocznie i o tym nie wiesz 😳",
+    "path": "/Users/antoni/claudecode/soft synergy new/ai-sales-funnel-short/ALL-RENDERS/liczba-szok-pl_2026-05-31_22-08-46.mp4",
+    "pin": "Ile płacisz co miesiąc? 👇",
+    "factors": {
+      "hook": "🅱️ SZOK-LICZBA (1800 ZŁ wielkie w 1. sekundzie)",
+      "wizual": "Wielka liczba + ciemne tło glow",
+      "glos": "Głęboki autorytet (Eric)",
+      "tempo": "10s, szybkie",
+      "temat": "Subskrypcje — strata",
+      "cta": "Pytanie do widza"
+    }
+  },
+  {
+    "id": "nie-przewijaj-pl",
+    "name": "nie-przewijaj-pl",
+    "cat": "value",
+    "title": "NIE PRZEWIJAJ — masz nadpłacony podatek 🛑",
+    "path": "/Users/antoni/claudecode/soft synergy new/ai-sales-funnel-short/ALL-RENDERS/nie-przewijaj-pl_2026-05-31_22-10-19.mp4",
+    "pin": "Sprawdziłeś e-PIT? 👇",
+    "factors": {
+      "hook": "🅲 KOMENDA „NIE PRZEWIJAJ\" (pattern interrupt słowny)",
+      "wizual": "Czerwony tekst + taśmy ostrzegawcze",
+      "glos": "Szybki casual (Charlie)",
+      "tempo": "9s, b. szybkie",
+      "temat": "Podatek / zwrot — chciwość",
+      "cta": "„Sprawdziłeś?\""
+    }
+  },
+  {
+    "id": "znajdz-blad-pl",
+    "name": "znajdz-blad-pl",
+    "cat": "trick",
+    "title": "Znajdź Q w 5 sekund 👀",
+    "path": "/Users/antoni/claudecode/soft synergy new/ai-sales-funnel-short/ALL-RENDERS/znajdz-blad-pl_2026-05-31_22-12-21.mp4",
+    "pin": "Ile Ci zajęło? 👇",
+    "factors": {
+      "hook": "🅳 PATTERN-INTERRUPT wizualny (ściana liter O + timer)",
+      "wizual": "MINIMAL siatka liter na kremowym",
+      "glos": "BRAK głosu — muzyka + sfx",
+      "tempo": "12s, odliczanie",
+      "temat": "Spostrzegawczość — rywalizacja",
+      "cta": "„Napisz swój czas\""
+    }
+  },
+  {
+    "id": "twarz-szok-pl",
+    "name": "twarz-szok-pl",
+    "cat": "value",
+    "title": "Zobaczyłem rachunek za prąd i zamarłem ⚡",
+    "path": "/Users/antoni/claudecode/soft synergy new/ai-sales-funnel-short/ALL-RENDERS/twarz-szok-pl_2026-05-31_22-13-53.mp4",
+    "pin": "Ile płacisz za prąd? 👇",
+    "factors": {
+      "hook": "🅴 TWARZ + REAKCJA (szok na twarzy w 1. klatce)",
+      "wizual": "CINEMATIC foto twarzy + ken-burns",
+      "glos": "Naturalny męski (Will)",
+      "tempo": "11s, średnie",
+      "temat": "Rachunek za prąd — strach/ulga",
+      "cta": "Pytanie do widza"
+    }
+  },
+  {
+    "id": "codex-free-money-shock",
+    "name": "codex-free-money-shock",
+    "cat": "value",
+    "title": "Jeśli freelancujesz, to jest darmowa kasa 💸",
+    "path": "/Users/antoni/claudecode/soft synergy new/ai-sales-funnel-short/ALL-RENDERS/codex-free-money-shock_2026-06-01.mp4",
+    "pin": "Którą usługę testujesz pierwszą? 👇",
+    "factors": {
+      "hook": "PL greed hook: darmowa kasa dla freelancerów",
+      "wizual": "CODEX shock type — dark/acid kinetic price slams",
+      "glos": "ElevenLabs Eric, szybki PL, bez muzyki",
+      "tempo": "17.6s, hard cuts + price reveals",
+      "temat": "Usługi AI, które freelancer może sprzedać",
+      "cta": "Wybierz jedno. Przetestuj w tym tygodniu."
+    }
+  },
+  {
+    "id": "codex-dm-proof",
+    "name": "codex-dm-proof",
+    "cat": "value",
+    "title": "Przestań sprzedawać godziny. Sprzedawaj systemy 🤖",
+    "path": "/Users/antoni/claudecode/soft synergy new/ai-sales-funnel-short/ALL-RENDERS/codex-dm-proof_2026-06-01.mp4",
+    "pin": "Wysłałbyś z tym 10 DM-ów? 👇",
+    "factors": {
+      "hook": "PL identity conflict: nie sprzedawaj godzin",
+      "wizual": "Native DM proof — chat thread + exact cursor clicks",
+      "glos": "ElevenLabs Eric, szybki PL, bez muzyki",
+      "tempo": "20.4s, message reveals + clicks",
+      "temat": "Usługi AI jako systemy widoczne dla klienta",
+      "cta": "Wybierz jedno i wyślij 10 wiadomości."
+    }
+  },
+  {
+    "id": "codex-price-dashboard",
+    "name": "codex-price-dashboard",
+    "cat": "value",
+    "title": "$500 w tydzień? Sprzedaj małe menu AI 📋",
+    "path": "/Users/antoni/claudecode/soft synergy new/ai-sales-funnel-short/ALL-RENDERS/codex-price-dashboard_2026-06-01.mp4",
+    "pin": "Chcesz template oferty? 👇",
+    "factors": {
+      "hook": "PL money target: $500 w tydzień",
+      "wizual": "Premium dashboard — service menu, cursor, booked meter",
+      "glos": "ElevenLabs Eric, szybki PL, bez muzyki",
+      "tempo": "19.2s, dashboard build + CTA",
+      "temat": "Pakietowanie i wycena usług AI",
+      "cta": "Pokaż przykład, potem poproś o tak."
+    }
+  },
+  {
+    "id": "codex-whiteboard-menu",
+    "name": "codex-whiteboard-menu",
+    "cat": "value",
+    "title": "3 usługi AI, które klient rozumie ✍️",
+    "path": "/Users/antoni/claudecode/soft synergy new/ai-sales-funnel-short/ALL-RENDERS/codex-whiteboard-menu_2026-06-01.mp4",
+    "pin": "Wybierz usługę do piątku 👇",
+    "factors": {
+      "hook": "PL framework hook: najprostsza drabina usług AI",
+      "wizual": "Clean whiteboard — marker sweeps + outcome rule",
+      "glos": "ElevenLabs Eric, szybki PL, bez muzyki",
+      "tempo": "21.5s, calm but structured",
+      "temat": "Drabina usług: wyjaśnij, wyceń, powtarzaj",
+      "cta": "Demo do piątku. Test w tym tygodniu."
+    }
+  },
+  {
+    "id": "free-money-slam",
+    "name": "free-money-slam",
+    "cat": "value",
+    "title": "Jeśli jesteś freelancerem, to są darmowe pieniądze 💸",
+    "path": "/Users/antoni/claudecode/soft synergy new/ai-sales-funnel-short/ALL-RENDERS/free-money-slam_2026-06-01_12-15-00.mp4",
+    "pin": "Którą usługę testujesz pierwszą? 👇",
+    "factors": {
+      "hook": "🅰️ STWIERDZENIE-SZOK „DARMOWA KASA\" (wielki tekst w 1. sekundzie)",
+      "wizual": "BRUTALIST — pełnoekranowe bloki koloru, hard cuts",
+      "glos": "BRAK głosu — muzyka + SFX + tekst",
+      "tempo": "12s, b. szybkie, rytm na bit",
+      "temat": "3 usługi AI dla freelancera + ceny",
+      "cta": "„Zapisz to\" 🔖"
+    }
+  },
+  {
+    "id": "free-money-500",
+    "name": "free-money-500",
+    "cat": "value",
+    "title": "3 usługi AI, za które już płacą 💰",
+    "path": "/Users/antoni/claudecode/soft synergy new/ai-sales-funnel-short/ALL-RENDERS/free-money-500_2026-06-01_12-15-00.mp4",
+    "pin": "Którą usługę odpalasz pierwszą? 👇",
+    "factors": {
+      "hook": "🅱️ SZOK-LICZBA — morphing cen DARMO→2000→3000→200 zł",
+      "wizual": "Cinematic dark glow + wielkie liczby (clip-gated)",
+      "glos": "Głęboki autorytet (Eric)",
+      "tempo": "18s, średnie z reveal cen",
+      "temat": "3 usługi AI dla freelancera + ceny",
+      "cta": "„Zapisz to\" 🔖"
+    }
+  },
+  {
+    "id": "free-money-stop",
+    "name": "free-money-stop",
+    "cat": "value",
+    "title": "STOP wymieniać godziny na złotówki 🛑",
+    "path": "/Users/antoni/claudecode/soft synergy new/ai-sales-funnel-short/ALL-RENDERS/free-money-stop_2026-06-01_12-15-00.mp4",
+    "pin": "Wysłałbyś z tym DM do klienta? 👇",
+    "factors": {
+      "hook": "🅲 KOMENDA „STOP\" (pattern interrupt) + dowód czatu",
+      "wizual": "Native chat-UI telefonu — wątek klient↔Ty z cenami",
+      "glos": "Szybki casual (Charlie)",
+      "tempo": "18s, message reveals + scroll",
+      "temat": "3 usługi AI dla freelancera + ceny",
+      "cta": "„Obserwuj\" 💸"
+    }
+  },
+  {
+    "id": "free-money-list",
+    "name": "free-money-list",
+    "cat": "value",
+    "title": "3 usługi A.I., których nikt nie tyka ✍️",
+    "path": "/Users/antoni/claudecode/soft synergy new/ai-sales-funnel-short/ALL-RENDERS/free-money-list_2026-06-01_12-15-00.mp4",
+    "pin": "Wybierz usługę na ten tydzień 👇",
+    "factors": {
+      "hook": "🅳 LISTA „3 usługi, których nikt nie sprzedaje\"",
+      "wizual": "Editorial minimal jasny (#f3efe6) + marker sweep",
+      "glos": "Naturalny męski (Will)",
+      "tempo": "20s, spokojne, uporządkowane",
+      "temat": "3 usługi AI dla freelancera + ceny",
+      "cta": "„Zapisz → zacznij dziś\""
+    }
+  }
+]
