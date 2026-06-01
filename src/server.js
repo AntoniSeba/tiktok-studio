@@ -8,6 +8,7 @@ import { db, listVideos, upsertVideo, ensureStats, getSetting, setSetting } from
 import { analyze } from './analysis.js';
 import { sendMail, emailShell, mailerReady } from './mailer.js';
 import { startScheduler, buildDailyDigest, buildWeeklyReport } from './scheduler.js';
+import { agentAvailable, startJob, listJobs, getJob, cancelJob, runningCount } from './agent.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const app = express();
@@ -18,7 +19,12 @@ const ok = (res, data) => res.json({ ok: true, ...data });
 const fail = (res, code, msg) => res.status(code).json({ ok: false, error: msg });
 
 // ---- health -----------------------------------------------------------------
-app.get('/api/health', (_req, res) => ok(res, { mailer: mailerReady ? 'configured' : 'dry', time: new Date().toISOString() }));
+app.get('/api/health', (_req, res) => ok(res, {
+  mailer: mailerReady ? 'configured' : 'dry',
+  agent: agentAvailable() ? 'ready' : 'unavailable',
+  jobsRunning: runningCount(),
+  time: new Date().toISOString()
+}));
 
 // ---- videos + stats ---------------------------------------------------------
 app.get('/api/videos', (_req, res) => ok(res, { videos: listVideos() }));
@@ -114,6 +120,35 @@ app.put('/api/queue/:id', (req, res) => {
 app.delete('/api/queue/:id', (req, res) => {
   db.prepare('DELETE FROM queue WHERE id=?').run(req.params.id);
   ok(res, {});
+});
+
+// ---- generation (headless Claude Code agent) --------------------------------
+// Kick off an agent that builds + renders a HyperFrames video and registers it.
+app.post('/api/generate', (req, res) => {
+  if (!agentAvailable()) return fail(res, 503, 'Agent niedostępny na tym hoście (brak claude CLI). Generuj lokalnie na Macu.');
+  const b = req.body || {};
+  // allow generating straight from a queue item id
+  let brief = b;
+  if (b.queue_id && !b.topic) {
+    const q = db.prepare('SELECT * FROM queue WHERE id=?').get(b.queue_id);
+    if (!q) return fail(res, 404, 'pozycja kolejki nie istnieje');
+    brief = { queue_id: q.id, topic: q.topic, hook: q.hook, angle: q.angle, notes: q.notes };
+  }
+  if (!brief.topic) return fail(res, 400, 'topic (temat) wymagany');
+  try {
+    const { id } = startJob(brief);
+    ok(res, { job_id: id });
+  } catch (e) { fail(res, 409, e.message); }
+});
+app.get('/api/jobs', (_req, res) => ok(res, { jobs: listJobs(25) }));
+app.get('/api/jobs/:id', (req, res) => {
+  const j = getJob(Number(req.params.id));
+  if (!j) return fail(res, 404, 'brak takiego zadania');
+  ok(res, { job: j });
+});
+app.post('/api/jobs/:id/cancel', (req, res) => {
+  const done = cancelJob(Number(req.params.id));
+  ok(res, { canceled: done });
 });
 
 // ---- analysis ---------------------------------------------------------------

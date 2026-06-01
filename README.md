@@ -15,7 +15,7 @@ Zastępuje stary `tracker.html` (czysty `localStorage`) prawdziwym backendem, kt
 | **📊 Pulpit** | Przegląd: ile filmów, ile opublikowanych, suma wyświetleń, średnia oglądalność, najbliższe publikacje, lider wyników. |
 | **🎞️ Filmy** | Karty filmów pogrupowane w batche. Wpisujesz wyniki (wyświetlenia, % do końca, lajki, zapisy, udostępnienia, komentarze, nowi obserwujący), planujesz publikację, kopiujesz pinned comment. |
 | **📅 Kalendarz** | Miesięczny widok publikacji. Planujesz datę+godzinę, oznaczasz jako opublikowane/pominięte. Oznaczenie „opublikowane" automatycznie ustawia status filmu. |
-| **🗂️ Kolejka renderów** | Kanban: Pomysł → Skrypt → Render → QA → Gotowe. Przesuwasz tematy między etapami. |
+| **🗂️ Kolejka renderów** | Kanban: Pomysł → Skrypt → Render → QA → Gotowe. Przesuwasz tematy między etapami. Przycisk **„✨ Generuj filmik"** odpala agenta Claude Code, który sam buduje i renderuje film. |
 | **🏆 Analiza** | Liczy, **które hooki / systemy wizualne / głosy / tempa / CTA wygrywają** (score = retencja×6 + zaangażowanie×4 + zasięg) i daje rekomendacje „rób tego więcej". |
 | **⚙️ Ustawienia** | Adres maila, godzina digestu, dzień raportu, cel publikacji/dzień, przyciski testowych maili. |
 
@@ -110,6 +110,39 @@ server {
 
 ---
 
+## ✨ Generator filmów (headless agent Claude Code)
+
+W **Kolejce renderów** każda karta ma przycisk **„✨ Generuj filmik"**. Kliknięcie odpala
+**agenta Claude Code w tle** (`claude --print --output-format stream-json …`), który:
+
+1. buduje nowy wariant w HyperFrames (`ai-sales-funnel-short/`),
+2. miksuje narrację+muzykę w jeden `mixbed.mp3` (bo HF normalizuje ścieżki osobno),
+3. renderuje MP4 i kopiuje go do `ALL-RENDERS/`,
+4. rejestruje gotowy film w Studio (`POST /api/videos`).
+
+Postęp lecisz **na żywo** w panelu „🤖 Generator" — log narzędzi agenta, status (⏳/✅/❌),
+koszt w \$, przycisk **stop**. Pozycja w kanbanie sama przeskakuje `pomysł → render → QA`.
+
+```
+┌── przeglądarka ──┐  POST /api/generate   ┌── Studio (Express) ──┐  spawn   ┌── claude (headless) ──┐
+│ „✨ Generuj"     │ ────────────────────▶ │ src/agent.js          │ ───────▶ │ buduje + renderuje HF │
+│ panel + live log │ ◀──  GET /api/jobs ── │ parsuje stream-json   │ ◀─────── │ POST /api/videos      │
+└──────────────────┘     (polling 2s)      └───────────────────────┘  stdout  └───────────────────────┘
+```
+
+**Wymagania:**
+- Działa tam, gdzie jest zainstalowany `claude` CLI — czyli **lokalnie na Macu**, nie na VPS.
+  (Na serwerze przycisk jest ukryty, a `/api/generate` zwraca `503` — dashboard tam tylko planuje i wysyła maile.)
+- Headless agent potrzebuje **własnego klucza Anthropic** (nie pożyczy zalogowanej sesji człowieka).
+  Wklej go do `.env` — tak samo jak Brevo — i zrestartuj:
+  ```env
+  AGENT_ANTHROPIC_API_KEY=sk-ant-…
+  # opcjonalnie: AGENT_MODEL=sonnet · AGENT_MAX_CONCURRENT=1 · AGENT_ENABLED=0 (wyłącz)
+  ```
+- Kropka **„Agent"** w lewym menu: 🟢 gotowy (jest `claude`) / 🟡 niedostępny.
+
+---
+
 ## API (skrót)
 
 | Metoda | Ścieżka | Opis |
@@ -119,6 +152,9 @@ server {
 | PUT | `/api/stats/:id` | zapisz wyniki filmu |
 | GET/POST/PUT/DELETE | `/api/schedule[/:id]` | kalendarz publikacji |
 | GET/POST/PUT/DELETE | `/api/queue[/:id]` | kolejka renderów |
+| POST | `/api/generate` | odpal agenta generującego film (z `queue_id` lub `topic`) |
+| GET | `/api/jobs[/:id]` | status zadań generatora + live log |
+| POST | `/api/jobs/:id/cancel` | zatrzymaj agenta |
 | GET | `/api/analysis` | zwycięskie czynniki + ranking |
 | GET/PUT | `/api/settings` | ustawienia |
 | POST | `/api/mail/{test,digest,weekly}` | wyślij maila ręcznie |

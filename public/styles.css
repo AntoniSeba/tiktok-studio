@@ -165,7 +165,29 @@ tr:hover td{background:#10141d}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .toast.err{background:#3a161c;color:#ffb3bd;border-color:#7a2630}
 .empty{text-align:center;color:var(--mut2);padding:40px 20px;font-size:14px}
+.empty code{background:#0d1017;border:1px solid var(--line);padding:1px 6px;border-radius:5px;color:var(--accent2)}
 .hidden{display:none!important}
+
+/* ---------- generator (agent jobs) ---------- */
+.btn.gen{background:linear-gradient(135deg,#2a1d57,#3a2780);border-color:#4a39a0;color:#cdbcff;font-weight:600}
+.btn.gen:hover{border-color:var(--accent);color:#fff;box-shadow:0 0 0 3px rgba(124,92,255,.18)}
+.cnt{display:inline-block;background:var(--panel2);border:1px solid var(--line2);color:var(--mut);
+  font-size:11px;font-weight:600;padding:1px 8px;border-radius:20px;margin-left:6px}
+.joblist{display:flex;flex-direction:column;gap:6px}
+.jobrow{display:grid;grid-template-columns:22px 1fr auto auto;align-items:center;gap:10px;cursor:pointer;
+  background:#0d1017;border:1px solid var(--line);border-radius:10px;padding:9px 12px;transition:.15s}
+.jobrow:hover{border-color:var(--line2);background:#0f131c}
+.jobrow.run{border-color:rgba(255,179,0,.4);box-shadow:0 0 0 1px rgba(255,179,0,.12) inset}
+.jobrow.done{border-color:rgba(25,211,107,.3)}
+.jobrow.error{border-color:rgba(255,84,104,.35)}
+.jobrow .jst{font-size:15px;text-align:center}
+.jobrow .jtopic{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.joblog{background:#07090d;border:1px solid var(--line);border-radius:10px;padding:12px 14px;
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;line-height:1.65;color:#b7c0d2;
+  max-height:340px;overflow:auto;white-space:pre-wrap;word-break:break-word}
+.joblog>div{padding:1px 0}
+@keyframes jpulse{0%,100%{opacity:.55}50%{opacity:1}}
+.jobrow.run .jst{animation:jpulse 1.2s ease-in-out infinite}
 .tabbar{display:flex;gap:6px;margin-bottom:18px;flex-wrap:wrap}
 .split{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 @media(max-width:900px){.app{grid-template-columns:1fr}.side{position:static;height:auto;flex-direction:row;flex-wrap:wrap}

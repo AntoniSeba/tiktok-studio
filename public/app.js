@@ -11,7 +11,7 @@ const esc = (s = '') => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': 
 const fmt = (n) => (Number(n) || 0).toLocaleString('pl-PL');
 const num = (v) => { const n = parseFloat(String(v).replace(',', '.').replace(/[^\d.]/g, '')); return isNaN(n) ? 0 : n; };
 
-let STATE = { videos: [], schedule: [], queue: [], settings: {}, analysis: null, mailerReady: false };
+let STATE = { videos: [], schedule: [], queue: [], settings: {}, analysis: null, mailerReady: false, jobs: [], agent: 'unavailable' };
 let VIEW = 'dashboard';
 
 function toast(msg, err = false) {
@@ -20,9 +20,9 @@ function toast(msg, err = false) {
 }
 
 async function loadAll() {
-  const [v, s, q, set, a] = await Promise.all([
+  const [v, s, q, set, a, j] = await Promise.all([
     api.get('/api/videos'), api.get('/api/schedule'), api.get('/api/queue'),
-    api.get('/api/settings'), api.get('/api/analysis')
+    api.get('/api/settings'), api.get('/api/analysis'), api.get('/api/jobs')
   ]);
   STATE.videos = v.videos || [];
   STATE.schedule = s.schedule || [];
@@ -30,14 +30,21 @@ async function loadAll() {
   STATE.settings = set.settings || {};
   STATE.mailerReady = set.mailerReady;
   STATE.analysis = a.analysis;
+  STATE.jobs = j.jobs || [];
 }
 
 /* ---------------- health ---------------- */
 async function health() {
   try {
     const h = await api.get('/api/health');
+    STATE.agent = h.agent || 'unavailable';
     $('#health-dot').className = 'dot' + (h.mailer === 'configured' ? '' : ' dry');
     $('#health-txt').textContent = h.mailer === 'configured' ? 'Brevo: aktywny' : 'Brevo: tryb dry';
+    const ad = $('#agent-dot'), at = $('#agent-txt');
+    if (ad) { ad.className = 'dot' + (h.agent === 'ready' ? '' : ' dry'); }
+    if (at) { at.textContent = h.agent === 'ready' ? `Agent: gotowy${h.jobsRunning ? ' · ' + h.jobsRunning + ' w toku' : ''}` : 'Agent: niedostępny'; }
+    // if a job is running, keep the queue view fresh
+    if (h.jobsRunning && VIEW === 'queue') { await loadAll(); paint(); }
   } catch { $('#health-txt').textContent = 'serwer offline'; $('#health-dot').className = 'dot dry'; }
 }
 
@@ -170,16 +177,42 @@ views.queue = () => {
     return `<div class="col"><h3>${label}<span class="cnt">${items.length}</span></h3>
       ${items.map(qcard).join('')}</div>`;
   }).join('');
+  const agentOff = STATE.agent !== 'ready';
   return `
-  <div class="page-head"><div><h1>Kolejka renderów</h1><p>Od pomysłu do gotowego MP4. Przesuwaj statusy przyciskami ◀ ▶.</p></div>
+  <div class="page-head"><div><h1>Kolejka renderów</h1><p>Od pomysłu do gotowego MP4. „✨ Generuj" odpala agenta Claude Code, który sam zbuduje i wyrenderuje film.</p></div>
     <div class="actions"><button class="btn primary" onclick="openQueueModal()">＋ Nowy temat</button></div></div>
+  ${jobsPanel(agentOff)}
   <div class="kanban">${cols}</div>`;
 };
+function jobsPanel(agentOff) {
+  const jobs = STATE.jobs || [];
+  const active = jobs.filter(j => j.status === 'running' || j.status === 'queued');
+  if (!jobs.length && agentOff) {
+    return `<div class="panel" style="margin-bottom:16px"><div class="empty">🤖 Agent generujący jest dostępny tylko lokalnie (na Macu z zainstalowanym <code>claude</code>). Na VPS ta funkcja jest wyłączona — tam dashboard tylko planuje i wysyła maile.</div></div>`;
+  }
+  if (!jobs.length) return '';
+  const row = (j) => {
+    const ic = { running: '⏳', queued: '•', done: '✅', error: '❌', canceled: '🛑' }[j.status] || '•';
+    const cls = j.status === 'running' ? 'run' : j.status;
+    return `<div class="jobrow ${cls}" onclick="openJob(${j.id})">
+      <span class="jst">${ic}</span>
+      <span class="jtopic">${esc(short(j.topic || '—', 46))}</span>
+      <span class="muted" style="font-size:12px">${j.status === 'done' && j.video_id ? '🎬 ' + esc(j.video_id) : esc(j.status)}${j.cost_usd ? ' · $' + Number(j.cost_usd).toFixed(2) : ''}</span>
+      ${j.status === 'running' ? `<button class="btn sm danger" onclick="event.stopPropagation();cancelJob(${j.id})">stop</button>` : ''}
+    </div>`;
+  };
+  return `<div class="panel" style="margin-bottom:16px">
+    <h2>🤖 Generator${active.length ? ` <span class="cnt">${active.length} w toku</span>` : ''}</h2>
+    <div class="joblist">${jobs.slice(0, 8).map(row).join('')}</div>
+  </div>`;
+}
 function qcard(q) {
   const idx = QCOLS.findIndex(c => c[0] === q.status);
+  const canGen = STATE.agent === 'ready';
   return `<div class="qcard">
     <div class="qt">${esc(q.topic)}</div>
     ${q.hook ? `<div class="qh">🪝 ${esc(q.hook)}</div>` : ''}
+    ${canGen && q.status !== 'done' ? `<button class="btn sm gen" style="width:100%;margin:6px 0 2px" onclick="generate(${q.id})">✨ Generuj filmik</button>` : ''}
     <div class="qmeta">
       <span class="prio p${q.priority}"></span>
       <span style="display:flex;gap:5px">
@@ -360,6 +393,44 @@ window.saveQueue = async () => {
 };
 window.qMove = async (id, status) => { await api.put('/api/queue/' + id, { status }); await refresh(); };
 window.qDel = async (id) => { await api.del('/api/queue/' + id); toast('Usunięto'); await refresh(); };
+
+/* ---- generator (headless agent) ---- */
+window.generate = async (queueId) => {
+  if (!confirm('Odpalić agenta Claude Code, żeby zbudował i wyrenderował ten film? To może potrwać kilka minut.')) return;
+  const r = await api.post('/api/generate', { queue_id: queueId });
+  if (r.ok) { toast('🤖 Agent ruszył'); await refresh(); openJob(r.job_id); }
+  else toast(r.error || 'Nie udało się odpalić', true);
+};
+window.cancelJob = async (id) => { await api.post('/api/jobs/' + id + '/cancel'); toast('Zatrzymuję…'); await refresh(); };
+
+let _jobPoll = null;
+window.openJob = async (id) => {
+  clearInterval(_jobPoll);
+  const render = (j) => {
+    const badge = { running: ['⏳ pracuje', 'var(--amber)'], queued: ['• w kolejce', 'var(--mut)'],
+      done: ['✅ gotowe', 'var(--green)'], error: ['❌ błąd', 'var(--red,#ff5470)'], canceled: ['🛑 anulowane', 'var(--mut)'] }[j.status] || ['—', 'var(--mut)'];
+    return `<h2>🤖 Generator — zadanie #${j.id}</h2>
+      <div class="rec" style="margin-bottom:10px"><div class="k" style="color:${badge[1]}">${badge[0]}</div>
+        <div><b>${esc(j.topic || '—')}</b>${j.video_id ? `<div class="muted" style="font-size:12px">🎬 film: ${esc(j.video_id)}${j.cost_usd ? ' · koszt ~$' + Number(j.cost_usd).toFixed(2) : ''}</div>` : ''}</div></div>
+      <div class="joblog">${esc(j.log || 'start…').split('\n').map(l => `<div>${esc(l)}</div>`).join('')}</div>
+      <div class="foot">
+        ${j.status === 'running' ? `<button class="btn danger" onclick="cancelJob(${j.id})">🛑 Zatrzymaj</button>` : ''}
+        <button class="btn ghost" onclick="closeModalJob()">Zamknij</button>
+      </div>`;
+  };
+  const tick = async () => {
+    const r = await api.get('/api/jobs/' + id);
+    if (!r.ok) return;
+    modal.innerHTML = render(r.job);
+    const lg = $('.joblog'); if (lg) lg.scrollTop = lg.scrollHeight;
+    if (['done', 'error', 'canceled'].includes(r.job.status)) { clearInterval(_jobPoll); _jobPoll = null; loadAll().then(() => { if (VIEW === 'queue') paint(); }); }
+  };
+  const first = await api.get('/api/jobs/' + id);
+  showModal(render(first.job));
+  const lg0 = $('.joblog'); if (lg0) lg0.scrollTop = lg0.scrollHeight;
+  if (first.job && first.job.status === 'running') _jobPoll = setInterval(tick, 2000);
+};
+window.closeModalJob = () => { clearInterval(_jobPoll); _jobPoll = null; closeModal(); };
 
 /* ================= actions ================= */
 window.delVideo = async (id) => { if (!confirm('Usunąć film ' + id + '?')) return; await api.del('/api/videos/' + id); toast('Usunięto'); await refresh(); };

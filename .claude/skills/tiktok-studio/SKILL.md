@@ -15,7 +15,7 @@ drive it through its REST API.
 
 ## First, check it's up
 ```bash
-curl -s $BASE/api/health      # {ok, mailer:"configured"|"dry"}
+curl -s $BASE/api/health      # {ok, mailer:"configured"|"dry", agent:"ready"|"unavailable", jobsRunning}
 ```
 If it's not running locally: `cd tiktok-studio && npm start` (auto-seeds 18 videos on first boot).
 
@@ -25,6 +25,7 @@ If it's not running locally: `cd tiktok-studio && npm start` (auto-seeds 18 vide
 - **schedule** — video_id, scheduled_at (ISO), platform, caption, status (planned|posted|skipped).
 - **queue** — render pipeline: topic, hook, angle, status (idea|script|render|qa|done), priority (1 high…3 low).
 - **settings** — mail_to, digest_hour, weekly_day, digest_enabled, reminders_enabled, cadence_per_day.
+- **jobs** — generator runs: topic, status (queued|running|done|error|canceled), log (live feed), video_id, cost_usd.
 
 ## Common operations
 
@@ -56,6 +57,21 @@ curl -s -X POST $BASE/api/queue -d '{"topic":"Jak wycenić AI usługę","hook":"
 curl -s -X PUT  $BASE/api/queue/1 -d '{"status":"render"}' -H 'Content-Type: application/json'
 ```
 Status flow: `idea → script → render → qa → done`.
+
+### Generate a video automatically (headless Claude Code agent)
+The dashboard's "✨ Generuj filmik" button — and this endpoint — spawn a background
+`claude` agent that builds + renders a HyperFrames video and registers it back via
+`POST /api/videos`. Kick it off from a queue item or a raw topic:
+```bash
+curl -s -X POST $BASE/api/generate -H 'Content-Type: application/json' -d '{"queue_id":1}'
+# or:  -d '{"topic":"Jak wycenić usługę AI","hook":"STOP za darmo","glos":"Eric"}'
+curl -s $BASE/api/jobs            # list jobs (status: queued|running|done|error)
+curl -s $BASE/api/jobs/1          # one job: live `log`, video_id, cost_usd
+curl -s -X POST $BASE/api/jobs/1/cancel
+```
+Only works where the `claude` CLI is installed (the Mac, not the VPS). The agent needs
+its own key: `AGENT_ANTHROPIC_API_KEY=sk-ant-…` in `.env`. If `agent:"unavailable"` in
+`/api/health`, generation is off on that host. Check `agent` + `jobsRunning` in health.
 
 ### Read the analytics (what's winning)
 ```bash

@@ -76,6 +76,24 @@ CREATE TABLE IF NOT EXISTS settings (
   key         TEXT PRIMARY KEY,
   value       TEXT DEFAULT ''
 );
+
+-- generation jobs: each row is one headless Claude Code agent run that builds
+-- + renders a video. The dashboard polls these for live status.
+CREATE TABLE IF NOT EXISTS jobs (
+  id          INTEGER PRIMARY KEY AUTOINCREMENT,
+  queue_id    INTEGER,                       -- source render-queue item (nullable)
+  topic       TEXT DEFAULT '',
+  hook        TEXT DEFAULT '',
+  status      TEXT DEFAULT 'queued',         -- queued | running | done | error | canceled
+  pid         INTEGER,
+  prompt      TEXT DEFAULT '',
+  log         TEXT DEFAULT '',               -- rolling human-readable progress feed
+  result      TEXT DEFAULT '',               -- final agent message / error
+  video_id    TEXT,                          -- video the agent registered, if any
+  cost_usd    REAL DEFAULT 0,
+  created_at  TEXT DEFAULT (datetime('now')),
+  finished_at TEXT
+);
 `);
 
 // ---- settings helpers -------------------------------------------------------
